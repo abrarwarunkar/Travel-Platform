@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.0] - 2026-11-25
+
+### Added
+- Supabase database foundation (Phase 2)
+  - Core schema migration (`001_core_schema.sql`): 21 tables, 2 enums, indexes, triggers
+  - Full-text search with tsvector + GIN indexes on destinations, guides, itineraries
+  - Row Level Security policies (`002_rls_policies.sql`): role-based access control
+  - Seed data (`seed.sql`): 10 countries, 8 experience categories, 8 guide categories, 4 published destinations
+  - Helper functions: `updated_at` triggers, search_vector updates, RLS helpers
+- Supabase client helpers in `src/lib/supabase/`:
+  - `browser.ts` - Client Components (createBrowserClient)
+  - `server.ts` - Server Components/Actions (createServerClient)
+  - `admin.ts` - Admin operations (service role key)
+- TypeScript database types in `src/types/database.ts` (Row, Insert, Update, composite types)
+- Data access layer in `src/services/destinations.ts`:
+  - Published destinations with filtering, pagination, search
+  - Featured destinations for homepage
+  - Category/country-based queries
+  - Full-text search and autocomplete
+  - CRUD operations for admin/editor use
+- Homepage integration: `FeaturedDestinationsSection` async component with Supabase data + fallback
+- Documentation: `DATABASE.md` (complete schema docs), updated `README.md` with Supabase setup guide
+
+### Changed
+- Homepage now fetches featured destinations from Supabase (with static fallback)
+- DestinationCard component accepts optional `heroImage` prop
+- Updated `getFeaturedDestinations` to join country data
+
 ## [v0.1.0] - 2026-11-25
 
 ### Added

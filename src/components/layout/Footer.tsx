@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FOOTER_NAVIGATION, SITE_CONFIG } from "@/config/site";
+import { SITE_CONFIG } from "@/config/site";
 import { Container } from "@/components/common/Container";
 
 const SOCIAL_LINKS = [

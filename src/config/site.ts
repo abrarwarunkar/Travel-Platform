@@ -1,6 +1,3 @@
-import { Suspense } from "react";
-import type { ReactNode } from "react";
-
 export const SITE_CONFIG = {
   brand: "NOMORA",
   tagline: "Discover beyond the familiar.",

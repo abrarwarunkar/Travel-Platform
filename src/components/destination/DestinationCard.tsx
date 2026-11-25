@@ -9,6 +9,7 @@ export interface DestinationCardProps {
   slug: string;
   description: string;
   gradient?: string;
+  heroImage?: string;
 }
 
 const DEFAULT_GRADIENTS = [
@@ -26,6 +27,7 @@ export function DestinationCard({
   slug,
   description,
   gradient,
+  heroImage,
 }: DestinationCardProps) {
   const cardGradient = gradient || DEFAULT_GRADIENTS[Math.abs(name.split("").reduce((a, b) => a + b.charCodeAt(0), 0)) % DEFAULT_GRADIENTS.length];
 
@@ -45,6 +47,13 @@ export function DestinationCard({
           role="img"
           aria-label={`${name}, ${country} landscape`}
         >
+          {heroImage && (
+            <img
+              src={heroImage}
+              alt={`${name}, ${country}`}
+              className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
           <div className="absolute inset-0 flex items-end p-5">
             <div className="w-full">
@@ -69,19 +78,48 @@ export function DestinationCard({
   );
 }
 
-export function FeaturedDestinationsGrid() {
-  const destinations = [
-    { name: "Ladakh", country: "India", slug: "ladakh", description: "High-altitude desert landscapes, ancient monasteries, and pristine lakes in the Himalayas." },
-    { name: "Spiti Valley", country: "India", slug: "spiti-valley", description: "Remote cold desert valley with Buddhist monasteries, fossil-rich terrain, and star-filled skies." },
-    { name: "Uttarakhand", country: "India", slug: "uttarakhand", description: "Land of gods with sacred rivers, hill stations, and gateway to Himalayan treks." },
-    { name: "Rajasthan", country: "India", slug: "rajasthan", description: "Royal palaces, golden deserts, vibrant culture, and majestic forts across the Thar." },
-    { name: "Kashmir", country: "India", slug: "kashmir", description: "Paradise on earth with alpine meadows, houseboats, saffron fields, and Mughal gardens." },
-    { name: "Kerala", country: "India", slug: "kerala", description: "Backwaters, spice plantations, Ayurvedic wellness, and tropical beaches on the Malabar Coast." },
-  ];
+export interface FeaturedDestinationsGridProps {
+  destinations: Array<{
+    name: string;
+    country: string;
+    slug: string;
+    description: string;
+    hero_image?: string;
+  }>;
+}
 
+export function FeaturedDestinationsGrid({ destinations }: FeaturedDestinationsGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {destinations.map((dest, index) => (
+        <DestinationCard
+          key={dest.slug}
+          name={dest.name}
+          country={dest.country}
+          slug={dest.slug}
+          description={dest.description}
+          gradient={DEFAULT_GRADIENTS[index % DEFAULT_GRADIENTS.length]}
+          heroImage={dest.hero_image}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Fallback static data for when Supabase is unavailable
+const FALLBACK_DESTINATIONS = [
+  { name: "Ladakh", country: "India", slug: "ladakh", description: "High-altitude desert landscapes, ancient monasteries, and pristine lakes in the Himalayas." },
+  { name: "Spiti Valley", country: "India", slug: "spiti-valley", description: "Remote cold desert valley with Buddhist monasteries, fossil-rich terrain, and star-filled skies." },
+  { name: "Uttarakhand", country: "India", slug: "uttarakhand", description: "Land of gods with sacred rivers, hill stations, and gateway to Himalayan treks." },
+  { name: "Rajasthan", country: "India", slug: "rajasthan", description: "Royal palaces, golden deserts, vibrant culture, and majestic forts across the Thar." },
+  { name: "Kashmir", country: "India", slug: "kashmir", description: "Paradise on earth with alpine meadows, houseboats, saffron fields, and Mughal gardens." },
+  { name: "Kerala", country: "India", slug: "kerala", description: "Backwaters, spice plantations, Ayurvedic wellness, and tropical beaches on the Malabar Coast." },
+];
+
+export function FeaturedDestinationsGridFallback() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {FALLBACK_DESTINATIONS.map((dest, index) => (
         <DestinationCard
           key={dest.slug}
           {...dest}

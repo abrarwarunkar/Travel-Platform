@@ -2,7 +2,6 @@
 
 import { DestinationSearch, SearchCTA } from "@/components/destination/DestinationSearch";
 import { Button } from "@/components/common/Button";
-import { cn } from "@/lib/utils";
 
 export function Hero() {
   return (

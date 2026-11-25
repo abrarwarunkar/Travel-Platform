@@ -95,6 +95,72 @@ See [docs/PRD.md](docs/PRD.md) for the full product specification.
 
 See `.env.example` for required variables. Never commit `.env.local`.
 
+## Supabase Setup
+
+### Local Development
+
+```bash
+# Install Supabase CLI
+npm install -g supabase
+
+# Start local Supabase stack
+npx supabase start
+
+# This starts:
+# - PostgreSQL on localhost:54322
+# - Supabase Studio on http://localhost:54323
+# - Auth on localhost:54321
+# - Storage on localhost:54323/storage
+
+# Run migrations (creates schema, RLS, seeds data)
+npx supabase db reset
+
+# Generate TypeScript types
+npx supabase gen types typescript --local > src/types/database.ts
+
+# Open Supabase Studio
+npx supabase studio
+```
+
+### Required Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in:
+
+```env
+# Supabase (required)
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-local-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-local-service-role-key
+
+# Optional: Production Supabase (for staging/prod)
+# NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your-production-anon-key
+# SUPABASE_SERVICE_ROLE_KEY=your-production-service-role-key
+```
+
+### Database Schema
+
+The database includes 21 tables covering:
+- **Core content**: destinations, guides, itineraries, attractions
+- **User content**: trips, reviews, comments, community posts
+- **System**: categories, countries, newsletter, media, reports
+- **Full-text search** on destinations, guides, itineraries
+- **Row Level Security** on all tables with role-based policies
+
+See [DATABASE.md](DATABASE.md) for complete schema documentation.
+
+### Migrations
+
+Migrations are in `supabase/migrations/`:
+- `001_core_schema.sql` — Tables, enums, indexes, triggers, full-text search
+- `002_rls_policies.sql` — RLS policies and helper functions
+- `seed.sql` — Reference data (10 countries, 8 categories, 4 destinations)
+
+Apply to production:
+```bash
+npx supabase db push
+```
+
 ## License
 
 Proprietary — All rights reserved.

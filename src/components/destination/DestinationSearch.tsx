@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/common/Button";
-import { cn } from "@/lib/utils";
 
 const SEARCH_CATEGORIES = [
   "Destination name",
@@ -15,7 +14,6 @@ const SEARCH_CATEGORIES = [
 export function DestinationSearch() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(SEARCH_CATEGORIES[0]);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

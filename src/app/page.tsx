@@ -1,12 +1,13 @@
 import { Hero, TripPlannerPromo } from "@/components/destination/Hero";
-import { FeaturedDestinationsGrid } from "@/components/destination/DestinationCard";
 import { ExperienceCategoriesGrid } from "@/components/destination/ExperienceCategory";
 import { FeaturedStoriesGrid } from "@/components/destination/StoryCard";
 import { NewsletterSection } from "@/components/forms/NewsletterForm";
 import { Section, SectionHeader } from "@/components/common/Section";
 import { Container } from "@/components/common/Container";
+import { FeaturedDestinationsSection } from "@/components/destination/FeaturedDestinationsSection";
+import { Suspense } from "react";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <>
       <Hero />
@@ -17,7 +18,9 @@ export default function HomePage() {
             subtitle="Handpicked destinations that capture the spirit of exploration"
             align="center"
           />
-          <FeaturedDestinationsGrid />
+          <Suspense fallback={<div className="h-80 flex items-center justify-center"><p className="font-body text-body-md text-muted-foreground">Loading featured destinations...</p></div>}>
+            <FeaturedDestinationsSection />
+          </Suspense>
           <div className="text-center mt-10">
             <a
               href="/destinations"
